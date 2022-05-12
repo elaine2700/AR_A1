@@ -275,6 +275,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.unity.xr-content.mars-sim-environments": {
+      "version": "file:../ContentPackages\\com.unity.xr-content.mars-sim-environments.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.unity.xr.arfoundation": {
       "version": "4.2.3",
       "depth": 0,

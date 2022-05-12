@@ -5,4 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes: []
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.mars-ar-foundation-providers.xr_subsystem_settings: {fileID: 11400000, guid: bfc06bcee4247e24ab68b70aad59f0d2, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 607bc07448c1ba048859ffc072b53d2c, type: 2}

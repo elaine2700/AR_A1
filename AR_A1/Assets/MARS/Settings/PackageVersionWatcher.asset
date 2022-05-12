@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e091ecaf9bddff4498d4cd0ecda09695, type: 3}
   m_Name: PackageVersionWatcher
   m_EditorClassIdentifier: 
-  m_PreviousMarsPackageVersion: 
+  m_PreviousMarsPackageVersion: 1.4.1
