@@ -1,0 +1,51 @@
+{
+    "name": "AutoInstallMarsAssembly",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.mars",
+            "expression": "0.8",
+            "define": "HAS_MARS"
+        },
+        {
+            "name": "com.unity.mars-ar-foundation-providers",
+            "expression": "0.1",
+            "define": "HAS_MARS_AR_FOUNDATION_PROVIDERS"
+        },
+        {
+            "name": "com.unity.mars-nav-mesh",
+            "expression": "0.1",
+            "define": "HAS_MARS_NAV_MESH"
+        },
+        {
+            "name": "com.unity.ar-companion-core",
+            "expression": "0.1",
+            "define": "HAS_AR_COMPANION_CORE"
+        },
+        {
+            "name": "com.unity.content-manager",
+            "expression": "0.1",
+            "define": "HAS_CONTENT_MANAGER"
+        },
+        {
+            "name": "com.unity.xr.management",
+            "expression": "0.1",
+            "define": "HAS_XR_MANAGEMENT"
+        },
+        {
+            "name": "com.unity.xr.arfoundation",
+            "expression": "0.1",
+            "define": "HAS_AR_FOUNDATION"
+        }
+    ],
+    "noEngineReferences": false
+}
