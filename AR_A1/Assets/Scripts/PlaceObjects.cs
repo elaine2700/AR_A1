@@ -4,8 +4,12 @@ public class PlaceObjects : MonoBehaviour
 {
     //[SerializeField] GameObject furniture;
     //[SerializeField] GameObject proxyParent;
+    [SerializeField] Canvas editionMenu;
 
     public Transform target;
+    
+    public enum States { select, spawn};
+    public States state = States.select;
 
     private void Update()
     {
@@ -38,11 +42,33 @@ public class PlaceObjects : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                target.position = hit.point;
+                // selecting piece to edit
+                if(target == null && state == States.select)
+                {
+                    if(hit.collider.gameObject.GetComponent<Piece>())
+                    {
+                        Debug.Log("found piece");
+                        target = hit.collider.transform;
+                        target.GetComponent<Piece>().EditPiece(editionMenu);
+                    }
+                }
+                else
+                {
+                    //spawning
+                    if(target != null && state == States.spawn)
+                        Instantiate(target.gameObject, hit.point, Quaternion.identity);
+                    state = States.select;
+                    target = null;
+                }
             }
         }
     }
 
+    public void DeselectPiece()
+    {
+        editionMenu.gameObject.SetActive(false);
+        target = null;
+    }
     /*public void PlaceOnWorld()
     {
         Debug.Log("Furniture Selected");
