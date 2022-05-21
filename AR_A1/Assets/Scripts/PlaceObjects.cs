@@ -43,11 +43,10 @@ public class PlaceObjects : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // selecting piece to edit
-                if(target == null && state == States.select)
+                if(  state == States.select)
                 {
                     if(hit.collider.gameObject.GetComponent<Piece>())
                     {
-                        Debug.Log("found piece");
                         target = hit.collider.transform;
                         target.GetComponent<Piece>().EditPiece(editionMenu);
                     }
@@ -58,7 +57,7 @@ public class PlaceObjects : MonoBehaviour
                     if(target != null && state == States.spawn)
                         Instantiate(target.gameObject, hit.point, Quaternion.identity);
                     state = States.select;
-                    target = null;
+                    //target = null;
                 }
             }
         }
@@ -69,6 +68,24 @@ public class PlaceObjects : MonoBehaviour
         editionMenu.gameObject.SetActive(false);
         target = null;
     }
+
+    public void RotateLeft()
+    {
+        target.GetComponent<Piece>().RotatePiece("left");
+    }
+
+    public void RotateRight()
+    {
+        target.GetComponent<Piece>().RotatePiece("right");
+    }
+
+    public void DestroyTarget()
+    {
+        target.GetComponent<Piece>().DestroyPiece();
+        editionMenu.gameObject.SetActive(false);
+    }
+
+    
     /*public void PlaceOnWorld()
     {
         Debug.Log("Furniture Selected");
