@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SimulationSettings
   m_EditorClassIdentifier: 
   m_EnvironmentMode: 0
-  m_EnvironmentPrefab: {fileID: 3151540597861133246, guid: a9d8488c48ba60b41a63864340bb61f5, type: 3}
-  m_SyntheticModeEnvironmentGuid: a9d8488c48ba60b41a63864340bb61f5
+  m_EnvironmentPrefab: {fileID: 741052542749489430, guid: 8e51353539f40a54eab0848e2f625f6d, type: 3}
+  m_SyntheticModeEnvironmentGuid: 8e51353539f40a54eab0848e2f625f6d
   m_IndependentRecording: {fileID: 7451220477654342660, guid: 40566a2a3e4e2a74db0f68bd7b1eb11a, type: 2}
   m_WebCamDeviceIndex: 0
   m_UseSyntheticRecording: 0
@@ -25,8 +25,12 @@ MonoBehaviour:
   m_ShowSimulatedEnvironment: 1
   m_ShowSimulatedData: 1
   m_SyntheticPrefabs:
-  - {fileID: 3151540597861133246, guid: a9d8488c48ba60b41a63864340bb61f5, type: 3}
+  - {fileID: 9042503003386982851, guid: d36624cde1e5de34c91e840d13da1281, type: 3}
+  - {fileID: 1729081193026240037, guid: 63d5ad35d0ccc2443a5fbe619f1c6b9f, type: 3}
+  - {fileID: 741052542749489430, guid: 8e51353539f40a54eab0848e2f625f6d, type: 3}
   m_SyntheticRecordings:
-  - {fileID: 8377579048678229361, guid: d6f5e529ab7ed2448850470ceae80773, type: 2}
+  - {fileID: -6865917388989604622, guid: 184f9d857b8176342a80de1831f434d3, type: 2}
+  - {fileID: 5182247577338002471, guid: 9e0f06576bed19a45b1192ae812e804c, type: 2}
+  - {fileID: -5323634614540303478, guid: f0b2d8ac7012c7144a73db4e2c23caa9, type: 2}
   m_UserFacingEnvironmentMode: 1
   m_WorldFacingEnvironmentMode: 0
