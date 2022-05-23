@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class PlaceObjects : MonoBehaviour
 {
-    //[SerializeField] GameObject furniture;
-    //[SerializeField] GameObject proxyParent;
     [SerializeField] Canvas editionMenu;
 
     public Transform target;
     
-    public enum States { select, spawn};
-    public States state = States.select;
+    public enum States { edit, spawn};
+    public States state = States.spawn;
 
     private void Update()
     {
@@ -43,21 +41,26 @@ public class PlaceObjects : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // selecting piece to edit
-                if(  state == States.select)
+                if(state == States.edit)
                 {
                     if(hit.collider.gameObject.GetComponent<Piece>())
                     {
                         target = hit.collider.transform;
                         target.GetComponent<Piece>().EditPiece(editionMenu);
+                        
+                    }
+                    // select the piece to change its position.
+                    else if(target != null)
+                    {
+                        MoveTarget(hit.point, hit.transform.tag);
                     }
                 }
                 else
                 {
-                    //spawning
-                    if(target != null && state == States.spawn)
-                        Instantiate(target.gameObject, hit.point, Quaternion.identity);
-                    state = States.select;
-                    //target = null;
+                    // choose an object from the UI to start spawning
+                    if (target != null && state == States.spawn)
+                        SpawnPiece(hit.point, hit.transform.tag);
+                    state = States.edit;
                 }
             }
         }
@@ -85,11 +88,19 @@ public class PlaceObjects : MonoBehaviour
         editionMenu.gameObject.SetActive(false);
     }
 
-    
-    /*public void PlaceOnWorld()
+    private void MoveTarget(Vector3 newPosition, string alignment)
     {
-        Debug.Log("Furniture Selected");
-        GameObject newObject = Instantiate(furniture);
-        newObject.transform.parent = proxyParent.transform;
-    }*/
+        target.GetComponent<Piece>().MovePiece(newPosition, alignment);
+    }
+
+    private void SpawnPiece(Vector3 spawnPos, string alignment)
+    {
+        bool pieceAlignment = target.GetComponent<Piece>().horizontal;
+        if (pieceAlignment && alignment == "Horizontal")
+            Instantiate(target.gameObject, spawnPos, Quaternion.identity);
+        else if (!pieceAlignment && alignment == "Vertical")
+            Instantiate(target.gameObject, spawnPos, Quaternion.identity);
+        else
+            Debug.Log("Pick another position");
+    }
 }

@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 263858464}
   - component: {fileID: 263858463}
   - component: {fileID: 263858462}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane (1)
-  m_TagString: Untagged
+  m_TagString: Vertical
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -326,9 +326,9 @@ GameObject:
   - component: {fileID: 960994903}
   - component: {fileID: 960994902}
   - component: {fileID: 960994901}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Horizontal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -572,9 +572,9 @@ GameObject:
   - component: {fileID: 1330998706}
   - component: {fileID: 1330998705}
   - component: {fileID: 1330998704}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Proxy Object
-  m_TagString: Untagged
+  m_TagString: Vertical
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -963,9 +963,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1747689933}
   - component: {fileID: 1747689932}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Proxy Replicator - Vertical Surfaces (1)
-  m_TagString: Untagged
+  m_TagString: Vertical
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1020,9 +1020,9 @@ GameObject:
   - component: {fileID: 1765623640}
   - component: {fileID: 1765623639}
   - component: {fileID: 1765623638}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Proxy Object
-  m_TagString: Untagged
+  m_TagString: Horizontal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1233,9 +1233,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2128075645}
   - component: {fileID: 2128075644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Proxy Replicator - Horizontal Surfaces
-  m_TagString: Untagged
+  m_TagString: Horizontal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Piece : MonoBehaviour
 {
+    public bool horizontal = true; // horizontal or vertical placement
     PlaceObjects placeObjects;
-    bool isSelected = false;
     float rotationIncrements = 45f;
+    string verticalLayer = "Vertical";
+    string horizontalLayer = "Horizontal";
 
     private void Start()
     {
         placeObjects = FindObjectOfType<PlaceObjects>();
+        //verticalLayer = LayerMask.NameToLayer("Vertical");
+        Debug.Log("Vertical layer: " + verticalLayer);
+        //horizontalLayer = LayerMask.NameToLayer("Horizontal");
+        Debug.Log("Horizontal layer: " + horizontalLayer);
     }
 
     public void EditPiece(Canvas menu)
     {
-        isSelected = true;
         menu.gameObject.SetActive(true);
-        placeObjects.state = PlaceObjects.States.select;
+        placeObjects.state = PlaceObjects.States.edit;
         Debug.Log("editing piece");
     }
 
@@ -43,5 +47,21 @@ public class Piece : MonoBehaviour
         placeObjects.target = null;
     }
 
+    public void MovePiece(Vector3 newPos, string Alignment)
+    {
+        Debug.Log("Collider alignment: " + Alignment + "vs Piece Alignment: " + horizontal);
+        if(Alignment == horizontalLayer && horizontal)
+        {
+            transform.position = newPos;
+        }
+        else if ( Alignment == verticalLayer && !horizontal)
+        {
+            transform.position = newPos;
+        }
+        else
+        {
+            Debug.Log("pick another position");
+        }
+    }
     
 }

@@ -18,7 +18,7 @@ MonoBehaviour:
   m_SimObjectsManagerLogging: 0
   m_SimPlaneFindingLogging: 0
   m_AllowInteractionTargetSelection: 0
-  m_SimDiscoveryPointCloudDebug: 0
+  m_SimDiscoveryPointCloudDebug: 1
   m_SimDiscoveryPlaneVerticesDebug: 0
   m_SimDiscoveryPlaneExtentsDebug: 0
   m_SimDiscoveryPlaneCenterDebug: 0
