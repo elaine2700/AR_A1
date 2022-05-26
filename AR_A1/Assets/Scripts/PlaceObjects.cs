@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaceObjects : MonoBehaviour
 {
@@ -33,37 +34,40 @@ public class PlaceObjects : MonoBehaviour
             isPressing = true;
         }
 #endif
-
-        if (isPressing)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Ray ray = Camera.main.ScreenPointToRay(pressPosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (isPressing)
             {
-                // selecting piece to edit
-                if(state == States.edit)
+                Ray ray = Camera.main.ScreenPointToRay(pressPosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if(hit.collider.gameObject.GetComponent<Piece>())
+                    // selecting piece to edit
+                    if (state == States.edit)
                     {
-                        target = hit.collider.transform;
-                        target.GetComponent<Piece>().EditPiece(editionMenu);
-                        
+                        if (hit.collider.gameObject.GetComponent<Piece>())
+                        {
+                            target = hit.collider.transform;
+                            target.GetComponent<Piece>().EditPiece(editionMenu);
+
+                        }
+                        // select the piece to change its position.
+                        else if (target != null)
+                        {
+                            MoveTarget(hit.point, hit.transform.tag);
+                        }
                     }
-                    // select the piece to change its position.
-                    else if(target != null)
+                    else
                     {
-                        MoveTarget(hit.point, hit.transform.tag);
+                        // choose an object from the UI to start spawning
+                        if (target != null && state == States.spawn)
+                            SpawnPiece(hit.point, hit.transform.tag);
+                        state = States.edit;
                     }
-                }
-                else
-                {
-                    // choose an object from the UI to start spawning
-                    if (target != null && state == States.spawn)
-                        SpawnPiece(hit.point, hit.transform.tag);
-                    state = States.edit;
                 }
             }
         }
+        
     }
 
     public void DeselectPiece()
