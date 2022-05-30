@@ -7,10 +7,8 @@ public class PlaceObjects : MonoBehaviour
 
     public Transform target;
     
-    public enum States { edit, spawn, move};
+    public enum States { edit, spawn};
     public States state = States.spawn;
-    bool lockMove = true;
-    int pointerId;
 
     private void Update()
     {
@@ -18,13 +16,11 @@ public class PlaceObjects : MonoBehaviour
         Vector3 pressPosition = Vector3.zero;
 
 #if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
  
             pressPosition = touch.position;
-            pointerId = touch.fingerId;
-            
             isPressing = true;
         }
 #endif
@@ -35,15 +31,11 @@ public class PlaceObjects : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             pressPosition = Input.mousePosition;
-            pointerId = -1;
-
             isPressing = true;
         }
 #endif
-
-        if (!EventSystem.current.IsPointerOverGameObject(pointerId))
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log(pointerId);
             if (isPressing)
             {
                 Ray ray = Camera.main.ScreenPointToRay(pressPosition);
@@ -59,11 +51,11 @@ public class PlaceObjects : MonoBehaviour
                             target.GetComponent<Piece>().EditPiece(editionMenu);
 
                         }
-                    }
-                    // select the piece to change its position.
-                    else if (target != null && state == States.move)
-                    {
-                        MoveTarget(hit.point, hit.transform.tag);
+                        // select the piece to change its position.
+                        else if (target != null)
+                        {
+                            MoveTarget(hit.point, hit.transform.tag);
+                        }
                     }
                     else
                     {
@@ -75,6 +67,7 @@ public class PlaceObjects : MonoBehaviour
                 }
             }
         }
+        
     }
 
     public void DeselectPiece()
@@ -102,20 +95,6 @@ public class PlaceObjects : MonoBehaviour
     private void MoveTarget(Vector3 newPosition, string alignment)
     {
         target.GetComponent<Piece>().MovePiece(newPosition, alignment);
-    }
-
-    public void UnlockMovement()
-    {
-        lockMove = !lockMove;
-        editionMenu.GetComponent<MenuButtons>().ChangeMoveButton(lockMove);
-        if(lockMove)
-        {
-            state = States.edit;
-        }
-        else
-        {
-            state = States.move;
-        }
     }
 
     private void SpawnPiece(Vector3 spawnPos, string alignment)
