@@ -6,11 +6,11 @@ public class PlaceObjects : MonoBehaviour
     [SerializeField] Canvas editionMenu;
 
     public Transform target;
-
     public enum States { edit, spawn, move };
-    public States state = States.spawn;
-    bool lockMove = true;
     int pointerId;
+    public bool lockMove = true;
+
+    public States state = States.spawn;
 
     private void Update()
     {
@@ -18,12 +18,13 @@ public class PlaceObjects : MonoBehaviour
         Vector3 pressPosition = Vector3.zero;
 
 #if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
             pressPosition = touch.position;
             pointerId = touch.fingerId;
+
             isPressing = true;
         }
 #endif
@@ -35,12 +36,11 @@ public class PlaceObjects : MonoBehaviour
         {
             pressPosition = Input.mousePosition;
             isPressing = true;
+            pointerId = -1;
         }
 #endif
-
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject(pointerId))
         {
-
             if (isPressing)
             {
                 Ray ray = Camera.main.ScreenPointToRay(pressPosition);
@@ -52,8 +52,10 @@ public class PlaceObjects : MonoBehaviour
                     {
                         if (hit.collider.gameObject.GetComponent<Piece>())
                         {
+
                             target = hit.collider.transform;
                             target.GetComponent<Piece>().EditPiece(editionMenu);
+
                         }
                     }
                     // select the piece to change its position.
@@ -61,16 +63,17 @@ public class PlaceObjects : MonoBehaviour
                     {
                         MoveTarget(hit.point, hit.transform.tag);
                     }
+
                     else
                     {
                         // choose an object from the UI to start spawning
                         if (target != null && state == States.spawn)
                             SpawnPiece(hit.point, hit.transform.tag);
                         state = States.edit;
+
                     }
 
                 }
-
             }
 
         }
