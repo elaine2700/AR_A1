@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaceObjects : MonoBehaviour
 {
@@ -6,8 +7,10 @@ public class PlaceObjects : MonoBehaviour
 
     public Transform target;
     
-    public enum States { edit, spawn};
+    public enum States { edit, spawn, move};
     public States state = States.spawn;
+    bool lockMove = true;
+    int pointerId;
 
     private void Update()
     {
@@ -15,11 +18,13 @@ public class PlaceObjects : MonoBehaviour
         Vector3 pressPosition = Vector3.zero;
 
 #if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             Touch touch = Input.GetTouch(0);
  
             pressPosition = touch.position;
+            pointerId = touch.fingerId;
+            
             isPressing = true;
         }
 #endif
@@ -30,37 +35,43 @@ public class PlaceObjects : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             pressPosition = Input.mousePosition;
+            pointerId = -1;
+
             isPressing = true;
         }
 #endif
 
-        if (isPressing)
+        if (!EventSystem.current.IsPointerOverGameObject(pointerId))
         {
-            Ray ray = Camera.main.ScreenPointToRay(pressPosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            Debug.Log(pointerId);
+            if (isPressing)
             {
-                // selecting piece to edit
-                if(state == States.edit)
+                Ray ray = Camera.main.ScreenPointToRay(pressPosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if(hit.collider.gameObject.GetComponent<Piece>())
+                    // selecting piece to edit
+                    if (state == States.edit)
                     {
-                        target = hit.collider.transform;
-                        target.GetComponent<Piece>().EditPiece(editionMenu);
-                        
+                        if (hit.collider.gameObject.GetComponent<Piece>())
+                        {
+                            target = hit.collider.transform;
+                            target.GetComponent<Piece>().EditPiece(editionMenu);
+
+                        }
                     }
                     // select the piece to change its position.
-                    else if(target != null)
+                    else if (target != null && state == States.move)
                     {
                         MoveTarget(hit.point, hit.transform.tag);
                     }
-                }
-                else
-                {
-                    // choose an object from the UI to start spawning
-                    if (target != null && state == States.spawn)
-                        SpawnPiece(hit.point, hit.transform.tag);
-                    state = States.edit;
+                    else
+                    {
+                        // choose an object from the UI to start spawning
+                        if (target != null && state == States.spawn)
+                            SpawnPiece(hit.point, hit.transform.tag);
+                        state = States.edit;
+                    }
                 }
             }
         }
@@ -91,6 +102,20 @@ public class PlaceObjects : MonoBehaviour
     private void MoveTarget(Vector3 newPosition, string alignment)
     {
         target.GetComponent<Piece>().MovePiece(newPosition, alignment);
+    }
+
+    public void UnlockMovement()
+    {
+        lockMove = !lockMove;
+        editionMenu.GetComponent<MenuButtons>().ChangeMoveButton(lockMove);
+        if(lockMove)
+        {
+            state = States.edit;
+        }
+        else
+        {
+            state = States.move;
+        }
     }
 
     private void SpawnPiece(Vector3 spawnPos, string alignment)
