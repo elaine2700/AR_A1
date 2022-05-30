@@ -1,13 +1,16 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaceObjects : MonoBehaviour
 {
     [SerializeField] Canvas editionMenu;
 
     public Transform target;
-    
-    public enum States { edit, spawn};
+
+    public enum States { edit, spawn, move };
     public States state = States.spawn;
+    bool lockMove = true;
+    int pointerId;
 
     private void Update()
     {
@@ -15,11 +18,12 @@ public class PlaceObjects : MonoBehaviour
         Vector3 pressPosition = Vector3.zero;
 
 #if UNITY_ANDROID || UNITY_IOS
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             Touch touch = Input.GetTouch(0);
- 
+
             pressPosition = touch.position;
+            pointerId = touch.fingerId;
             isPressing = true;
         }
 #endif
@@ -36,55 +40,40 @@ public class PlaceObjects : MonoBehaviour
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
+
             if (isPressing)
-
-
-        if (isPressing)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(pressPosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
-
             {
-                // selecting piece to edit
-                if(state == States.edit)
-                {
-                    if(hit.collider.gameObject.GetComponent<Piece>())
-                    {
+                Ray ray = Camera.main.ScreenPointToRay(pressPosition);
 
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    // selecting piece to edit
+                    if (state == States.edit)
+                    {
                         if (hit.collider.gameObject.GetComponent<Piece>())
                         {
                             target = hit.collider.transform;
                             target.GetComponent<Piece>().EditPiece(editionMenu);
-
                         }
-                        // select the piece to change its position.
-                        else if (target != null)
-                        {
-                            MoveTarget(hit.point, hit.transform.tag);
-                        }
-
-                        target = hit.collider.transform;
-                        target.GetComponent<Piece>().EditPiece(editionMenu);
-                        
                     }
                     // select the piece to change its position.
-                    else if(target != null)
+                    else if (target != null && state == States.move)
                     {
                         MoveTarget(hit.point, hit.transform.tag);
-
                     }
+                    else
+                    {
+                        // choose an object from the UI to start spawning
+                        if (target != null && state == States.spawn)
+                            SpawnPiece(hit.point, hit.transform.tag);
+                        state = States.edit;
+                    }
+
                 }
-                else
-                {
-                    // choose an object from the UI to start spawning
-                    if (target != null && state == States.spawn)
-                        SpawnPiece(hit.point, hit.transform.tag);
-                    state = States.edit;
-                }
+
             }
+
         }
-        
     }
 
     public void DeselectPiece()
@@ -114,6 +103,20 @@ public class PlaceObjects : MonoBehaviour
         target.GetComponent<Piece>().MovePiece(newPosition, alignment);
     }
 
+    public void UnlockMovement()
+    {
+        lockMove = !lockMove;
+        editionMenu.GetComponent<MenuButtons>().ChangeMoveButton(lockMove);
+        if (lockMove)
+        {
+            state = States.edit;
+        }
+        else
+        {
+            state = States.move;
+        }
+    }
+
     private void SpawnPiece(Vector3 spawnPos, string alignment)
     {
         bool pieceAlignment = target.GetComponent<Piece>().horizontal;
@@ -124,4 +127,5 @@ public class PlaceObjects : MonoBehaviour
         else
             Debug.Log("Pick another position");
     }
+
 }
